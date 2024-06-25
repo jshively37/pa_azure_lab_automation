@@ -13,5 +13,5 @@ variable "role" {
 variable "location" {
   description = "Region to deploy"
   type = string
-  default = "US East"
+  default = "eastus"
 }
