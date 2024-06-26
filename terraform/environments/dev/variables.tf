@@ -1,3 +1,15 @@
+variable "address_space" {
+  description = "List of subnets"
+  type = list
+  default = ["10.32.0.0/22"]
+}
+
+variable "location" {
+  description = "Region to deploy"
+  type = string
+  default = "eastus"
+}
+
 variable "user_name" {
   description = "Name of the user"
   type = string
@@ -10,8 +22,11 @@ variable "role" {
   default = "sc"
 }
 
-variable "location" {
-  description = "Region to deploy"
-  type = string
-  default = "eastus"
+variable "tags" {
+  description = "Tags to apply to resources"
+  type = map(string)
+  default = {
+    DND = "true"
+    no-delete = "true"
+  }
 }
