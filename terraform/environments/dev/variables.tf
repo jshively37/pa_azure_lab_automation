@@ -10,6 +10,11 @@ variable "location" {
   default     = "eastus"
 }
 
+variable "password" {
+  description = "Palo Alto admin password"
+  type        = string
+}
+
 variable "user_name" {
   description = "Name of the user"
   type        = string
@@ -20,6 +25,12 @@ variable "role" {
   description = "Type of connection"
   type        = string
   default     = "sc"
+}
+
+variable "vm_size" {
+  description = "Size of the VM"
+  type        = string
+  default     = "Standard_D8_v4"
 }
 
 variable "tags" {
