@@ -44,7 +44,7 @@ resource "azurerm_public_ip" "mgmt_public" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = var.location
   allocation_method   = "Static"
-  # domain_name_label = "${var.location}.cloudapp.azure.com"
+  domain_name_label = "${var.user_name}-${var.role}-mgmt"
 }
 
 resource "azurerm_public_ip" "untrust_public" {
@@ -52,6 +52,7 @@ resource "azurerm_public_ip" "untrust_public" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = var.location
   allocation_method   = "Static"
+  domain_name_label = "${var.user_name}-${var.role}-untrust"
 }
 
 resource "azurerm_network_interface" "mgmt" {
