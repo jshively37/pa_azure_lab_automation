@@ -12,7 +12,7 @@ variable "location" {
 
 variable "password" {
   description = "Palo Alto admin password"
-  type = string
+  type        = string
 }
 
 variable "user_name" {
@@ -29,8 +29,8 @@ variable "role" {
 
 variable "vm_size" {
   description = "Size of the VM"
-  type = string
-  default = "Standard_D8_v4"
+  type        = string
+  default     = "Standard_D8_v4"
 }
 
 variable "tags" {

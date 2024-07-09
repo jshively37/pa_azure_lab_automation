@@ -7,7 +7,7 @@ resource "azurerm_linux_virtual_machine" "pa_fw" {
   name                            = "${var.user_name}-${var.role}-fw"
   computer_name                   = "${var.user_name}-${var.role}-fw"
   location                        = var.location
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name             = azurerm_resource_group.rg.name
   size                            = var.vm_size
   admin_username                  = var.user_name
   admin_password                  = var.password
@@ -22,15 +22,17 @@ resource "azurerm_linux_virtual_machine" "pa_fw" {
     storage_account_type = "Standard_LRS"
   }
   plan {
+    name      = "byol"
     publisher = "paloaltonetworks"
     product   = "vmseries-flex"
-    name      = "byol"
+
   }
 
   source_image_reference {
-    publisher = "paloaltonetworks"
     offer     = "vmseries-flex"
+    publisher = "paloaltonetworks"
     sku       = "byol"
     version   = "latest"
   }
+  tags = var.tags
 }

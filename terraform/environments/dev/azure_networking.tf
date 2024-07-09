@@ -8,6 +8,7 @@ locals {
 resource "azurerm_resource_group" "rg" {
   name     = "${var.user_name}-${var.role}-rg"
   location = var.location
+  tags     = var.tags
 }
 
 resource "azurerm_virtual_network" "vnet" {
@@ -44,7 +45,8 @@ resource "azurerm_public_ip" "mgmt_public" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = var.location
   allocation_method   = "Static"
-  domain_name_label = "${var.user_name}-${var.role}-mgmt"
+  domain_name_label   = "${var.user_name}-${var.role}-mgmt"
+  tags                = var.tags
 }
 
 resource "azurerm_public_ip" "untrust_public" {
@@ -52,7 +54,8 @@ resource "azurerm_public_ip" "untrust_public" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = var.location
   allocation_method   = "Static"
-  domain_name_label = "${var.user_name}-${var.role}-untrust"
+  domain_name_label   = "${var.user_name}-${var.role}-untrust"
+  tags                = var.tags
 }
 
 resource "azurerm_network_interface" "mgmt" {
@@ -63,8 +66,9 @@ resource "azurerm_network_interface" "mgmt" {
     name                          = "mgmt"
     subnet_id                     = azurerm_subnet.mgmt.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id =  azurerm_public_ip.mgmt_public.id
+    public_ip_address_id          = azurerm_public_ip.mgmt_public.id
   }
+  tags = var.tags
 }
 
 resource "azurerm_network_interface" "untrust" {
@@ -75,8 +79,9 @@ resource "azurerm_network_interface" "untrust" {
     name                          = "untrust"
     subnet_id                     = azurerm_subnet.untrust.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id =  azurerm_public_ip.untrust_public.id
+    public_ip_address_id          = azurerm_public_ip.untrust_public.id
   }
+  tags = var.tags
 }
 
 resource "azurerm_network_interface" "trust" {
@@ -88,6 +93,7 @@ resource "azurerm_network_interface" "trust" {
     subnet_id                     = azurerm_subnet.trust.id
     private_ip_address_allocation = "Dynamic"
   }
+  tags = var.tags
 }
 
 resource "azurerm_route_table" "trust_route" {
@@ -96,11 +102,12 @@ resource "azurerm_route_table" "trust_route" {
   resource_group_name = azurerm_resource_group.rg.name
 
   route {
-    name           = "trust-to-pa"
-    address_prefix = azurerm_subnet.trust.address_prefixes[0]
+    name                   = "trust-to-pa"
+    address_prefix         = azurerm_subnet.trust.address_prefixes[0]
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.32.1.4"
   }
+  tags = var.tags
 }
 
 resource "azurerm_subnet_route_table_association" "trust_subnet" {
@@ -135,4 +142,5 @@ resource "azurerm_network_security_group" "allow_all" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+  tags = var.tags
 }
