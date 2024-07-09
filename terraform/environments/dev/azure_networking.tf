@@ -6,8 +6,8 @@ locals {
   pa_untrust_ip  = cidrhost(local.untrust_subnet[0], 4)
   pa_trust_ip    = cidrhost(local.trust_subnet[0], 4)
   pa_mgmt_ip     = cidrhost(local.mgmt_subnet[0], 4)
-  windows_ip     = cidrhost(local.untrust_subnet[0], 10)
-  ubuntu_ip      = cidrhost(local.untrust_subnet[0], 20)
+  windows_ip     = cidrhost(local.trust_subnet[0], 10)
+  ubuntu_ip      = cidrhost(local.trust_subnet[0], 20)
 }
 
 resource "azurerm_resource_group" "rg" {
@@ -101,6 +101,17 @@ resource "azurerm_network_interface" "trust" {
   tags = var.tags
 }
 
+resource "azurerm_network_interface" "ubuntu" {
+  name                = "${var.user_name}-${var.role}-ubuntu-nic"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg.name
+  ip_configuration {
+    name                          = "ubuntu"
+    subnet_id                     = azurerm_subnet.trust.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
 resource "azurerm_route_table" "trust_route" {
   name                = "${var.user_name}-${var.role}-trust-route-table"
   location            = var.location
@@ -108,7 +119,7 @@ resource "azurerm_route_table" "trust_route" {
 
   route {
     name                   = "trust-to-pa"
-    address_prefix         = azurerm_subnet.trust.address_prefixes[0]
+    address_prefix         = "0.0.0.0/0"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.32.1.4"
   }
@@ -149,3 +160,8 @@ resource "azurerm_network_security_group" "allow_all" {
   }
   tags = var.tags
 }
+
+# resource "azurerm_network_interface_security_group_association" "ubuntu" {
+#   network_interface_id = azurerm_network_interface.ubuntu.id
+#   network_security_group_id = azurerm_network_security_group.allow_all.id
+# }
