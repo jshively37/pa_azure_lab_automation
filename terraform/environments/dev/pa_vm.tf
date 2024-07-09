@@ -1,3 +1,8 @@
+# resource "random_password" "pa_admin_pwd" {
+#   length = 12
+#   special = true
+# }
+
 resource "azurerm_linux_virtual_machine" "pa_fw" {
   name                            = "${var.user_name}-${var.role}-fw"
   computer_name                   = "${var.user_name}-${var.role}-fw"
