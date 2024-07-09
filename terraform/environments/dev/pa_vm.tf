@@ -25,9 +25,7 @@ resource "azurerm_linux_virtual_machine" "pa_fw" {
     name      = "byol"
     publisher = "paloaltonetworks"
     product   = "vmseries-flex"
-
   }
-
   source_image_reference {
     offer     = "vmseries-flex"
     publisher = "paloaltonetworks"
