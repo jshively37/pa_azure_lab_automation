@@ -3,10 +3,11 @@ locals {
   untrust_subnet = [local.subnets[0]]
   trust_subnet   = [local.subnets[1]]
   mgmt_subnet    = [local.subnets[3]]
-  pa_trust_ip = cidrhost(local.trust_subnet[0], 4)
-  pa_untrust_ip = cidrhost(local.untrust_subnet[0], 4)
-  windows_ip = cidrhost(local.untrust_subnet[0], 10)
-  ubuntu_ip = cidrhost(local.untrust_subnet[0], 20)
+  pa_untrust_ip  = cidrhost(local.untrust_subnet[0], 4)
+  pa_trust_ip    = cidrhost(local.trust_subnet[0], 4)
+  pa_mgmt_ip     = cidrhost(local.mgmt_subnet[0], 4)
+  windows_ip     = cidrhost(local.untrust_subnet[0], 10)
+  ubuntu_ip      = cidrhost(local.untrust_subnet[0], 20)
 }
 
 resource "azurerm_resource_group" "rg" {
