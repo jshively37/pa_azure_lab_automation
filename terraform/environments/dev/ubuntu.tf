@@ -1,14 +1,33 @@
+resource "random_id" "random_id" {
+  keepers = {
+    resource_group = azurerm_resource_group.rg.name
+  }
+
+  byte_length = 8
+}
+
+resource "azurerm_storage_account" "ubuntu_boot_diag" {
+  name                     = "diag${random_id.random_id.hex}"
+  location                 = var.location
+  resource_group_name      = azurerm_resource_group.rg.name
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
 resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
-  name                  = "${var.user_name}-${var.role}-ubuntu"
+  name                  = "${var.user_name}-${var.location}-${var.role}-ubuntu"
   location              = var.location
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.ubuntu.id]
   size                  = "Standard_D2s_v3"
 
   os_disk {
-    name                 = "${var.user_name}-${var.role}-ubuntu-disk"
+    name                 = "${var.user_name}-${var.location}-${var.role}-ubuntu-disk"
     caching              = "ReadWrite"
     storage_account_type = "Premium_LRS"
+  }
+  boot_diagnostics {
+    storage_account_uri = azurerm_storage_account.ubuntu_boot_diag.primary_blob_endpoint
   }
 
   source_image_reference {
@@ -18,7 +37,7 @@ resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
     version   = "latest"
   }
 
-  computer_name                   = "${var.user_name}-${var.role}-ubuntu"
+  computer_name                   = "${var.user_name}-${var.location}-${var.role}-ubuntu"
   admin_username                  = var.user_name
   admin_password                  = var.password
   disable_password_authentication = false
