@@ -6,7 +6,7 @@
 resource "azurerm_linux_virtual_machine" "pa_fw" {
   name                            = "${var.user_name}-${var.location}-${var.role}-fw"
   computer_name                   = "${var.user_name}-${var.location}-${var.role}-fw"
-  location                        = var.location
+  location                        = azurerm_resource_group.rg.location
   resource_group_name             = azurerm_resource_group.rg.name
   size                            = var.vm_size
   admin_username                  = var.user_name

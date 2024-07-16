@@ -8,7 +8,7 @@ resource "random_id" "random_id" {
 
 resource "azurerm_storage_account" "ubuntu_boot_diag" {
   name                     = "diag${random_id.random_id.hex}"
-  location                 = var.location
+  location                 = azurerm_resource_group.rg.location
   resource_group_name      = azurerm_resource_group.rg.name
   account_tier             = "Standard"
   account_replication_type = "LRS"
@@ -16,7 +16,7 @@ resource "azurerm_storage_account" "ubuntu_boot_diag" {
 
 resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
   name                  = "${var.user_name}-${var.location}-${var.role}-ubuntu"
-  location              = var.location
+  location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.ubuntu.id]
   size                  = "Standard_D2s_v3"

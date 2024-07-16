@@ -18,7 +18,7 @@ resource "azurerm_resource_group" "rg" {
 
 resource "azurerm_virtual_network" "vnet" {
   name                = "${var.user_name}-${var.location}-${var.role}-vnet"
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   address_space       = var.address_space
   tags                = var.tags
@@ -48,7 +48,7 @@ resource "azurerm_subnet" "mgmt" {
 resource "azurerm_public_ip" "mgmt_public" {
   name                = "${var.user_name}-${var.location}-${var.role}-pa-mgmt-pip"
   resource_group_name = azurerm_resource_group.rg.name
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
   domain_name_label   = "${var.user_name}-${var.role}-mgmt"
   tags                = var.tags
@@ -57,7 +57,7 @@ resource "azurerm_public_ip" "mgmt_public" {
 resource "azurerm_public_ip" "untrust_public" {
   name                = "${var.user_name}-${var.location}-${var.role}-pa-untrust-pip"
   resource_group_name = azurerm_resource_group.rg.name
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
   domain_name_label   = "${var.user_name}-${var.role}-untrust"
   tags                = var.tags
@@ -65,7 +65,7 @@ resource "azurerm_public_ip" "untrust_public" {
 
 resource "azurerm_network_interface" "mgmt" {
   name                = "${var.user_name}-${var.location}-${var.role}-pa-mgmt"
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   ip_configuration {
     name                          = "mgmt"
@@ -79,7 +79,7 @@ resource "azurerm_network_interface" "mgmt" {
 
 resource "azurerm_network_interface" "untrust" {
   name                = "${var.user_name}-${var.location}-${var.role}-pa-untrust"
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   ip_configuration {
     name                          = "untrust"
@@ -93,7 +93,7 @@ resource "azurerm_network_interface" "untrust" {
 
 resource "azurerm_network_interface" "trust" {
   name                = "${var.user_name}-${var.location}-${var.role}-pa-trust"
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   ip_configuration {
     name                          = "trust"
@@ -106,7 +106,7 @@ resource "azurerm_network_interface" "trust" {
 
 resource "azurerm_network_interface" "ubuntu" {
   name                = "${var.user_name}-${var.location}-${var.role}-ubuntu-nic"
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   ip_configuration {
     name                          = "ubuntu"
@@ -118,7 +118,7 @@ resource "azurerm_network_interface" "ubuntu" {
 
 resource "azurerm_route_table" "trust_route" {
   name                = "${var.user_name}-${var.location}-${var.role}-trust-route-table"
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
   route {
@@ -137,7 +137,7 @@ resource "azurerm_subnet_route_table_association" "trust_subnet" {
 
 resource "azurerm_network_security_group" "allow_all" {
   name                = "${var.user_name}-${var.location}-${var.role}-sg-all"
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
   security_rule {
