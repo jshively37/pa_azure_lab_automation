@@ -165,8 +165,3 @@ resource "azurerm_network_security_group" "allow_all" {
   }
   tags = var.tags
 }
-
-# resource "azurerm_network_interface_security_group_association" "ubuntu" {
-#   network_interface_id = azurerm_network_interface.ubuntu.id
-#   network_security_group_id = azurerm_network_security_group.allow_all.id
-# }
