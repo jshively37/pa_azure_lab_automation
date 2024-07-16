@@ -15,14 +15,15 @@ resource "azurerm_storage_account" "ubuntu_boot_diag" {
 }
 
 resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
-  name                  = "${var.user_name}-${var.location}-${var.role}-ubuntu"
+  # name                  = "${local.slug_name}-ubuntu"
+  name                  = "${local.slug_name}-ubuntu"
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.ubuntu.id]
   size                  = "Standard_D2s_v3"
 
   os_disk {
-    name                 = "${var.user_name}-${var.location}-${var.role}-ubuntu-disk"
+    name                 = "${local.slug_name}-ubuntu-disk"
     caching              = "ReadWrite"
     storage_account_type = "Premium_LRS"
   }
@@ -37,7 +38,7 @@ resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
     version   = "latest"
   }
 
-  computer_name                   = "${var.user_name}-${var.location}-${var.role}-ubuntu"
+  computer_name                   = "${local.slug_name}-ubuntu"
   admin_username                  = var.user_name
   admin_password                  = var.password
   disable_password_authentication = false

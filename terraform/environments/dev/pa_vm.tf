@@ -4,8 +4,8 @@
 # }
 
 resource "azurerm_linux_virtual_machine" "pa_fw" {
-  name                            = "${var.user_name}-${var.location}-${var.role}-fw"
-  computer_name                   = "${var.user_name}-${var.location}-${var.role}-fw"
+  name                            = "${local.slug_name}-fw"
+  computer_name                   = "${local.slug_name}-fw"
   location                        = azurerm_resource_group.rg.location
   resource_group_name             = azurerm_resource_group.rg.name
   size                            = var.vm_size
@@ -18,7 +18,7 @@ resource "azurerm_linux_virtual_machine" "pa_fw" {
     azurerm_network_interface.trust.id
   ]
   os_disk {
-    name                 = "${var.user_name}-${var.location}-${var.role}-fw-disk"
+    name                 = "${local.slug_name}-fw-disk"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
