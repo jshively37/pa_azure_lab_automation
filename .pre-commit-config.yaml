@@ -8,6 +8,9 @@ repos:
 - repo: https://github.com/antonbabenko/pre-commit-terraform
   rev: v1.77.1
   hooks:
+    - id: terraform_validate
+      args:
+        - --args=-json
     - id: terraform_fmt
       args:
         - --args=-diff
