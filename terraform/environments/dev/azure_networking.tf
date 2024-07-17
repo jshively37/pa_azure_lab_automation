@@ -117,6 +117,18 @@ resource "azurerm_network_interface" "ubuntu" {
   }
 }
 
+resource "azurerm_network_interface" "windows" {
+  name                = "${local.slug_name}-windows-nic"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  ip_configuration {
+    name                          = "windows"
+    subnet_id                     = azurerm_subnet.trust.id
+    private_ip_address_allocation = "Static"
+    private_ip_address            = local.windows_ip
+  }
+}
+
 resource "azurerm_route_table" "trust_route" {
   name                = "${local.slug_name}-trust-route-table"
   location            = azurerm_resource_group.rg.location
