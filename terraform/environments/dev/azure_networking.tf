@@ -3,17 +3,23 @@ locals {
   untrust_subnet = [local.subnets[0]]
   trust_subnet   = [local.subnets[1]]
   mgmt_subnet    = [local.subnets[3]]
+  pa_untrust_ip  = cidrhost(local.untrust_subnet[0], 4)
+  pa_trust_ip    = cidrhost(local.trust_subnet[0], 4)
+  pa_mgmt_ip     = cidrhost(local.mgmt_subnet[0], 4)
+  windows_ip     = cidrhost(local.trust_subnet[0], 10)
+  ubuntu_ip      = cidrhost(local.trust_subnet[0], 20)
+  slug_name      = "${var.user_name}-${var.location}-${var.role}"
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "${var.user_name}-${var.role}-rg"
+  name     = "${local.slug_name}-rg"
   location = var.location
   tags     = var.tags
 }
 
 resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.user_name}-${var.role}-vnet"
-  location            = var.location
+  name                = "${local.slug_name}-vnet"
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   address_space       = var.address_space
   tags                = var.tags
@@ -41,69 +47,84 @@ resource "azurerm_subnet" "mgmt" {
 }
 
 resource "azurerm_public_ip" "mgmt_public" {
-  name                = "${var.user_name}-${var.role}-mgmt-pip"
+  name                = "${local.slug_name}-pa-mgmt-pip"
   resource_group_name = azurerm_resource_group.rg.name
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
   domain_name_label   = "${var.user_name}-${var.role}-mgmt"
   tags                = var.tags
 }
 
 resource "azurerm_public_ip" "untrust_public" {
-  name                = "${var.user_name}-${var.role}-untrust-pip"
+  name                = "${local.slug_name}-pa-untrust-pip"
   resource_group_name = azurerm_resource_group.rg.name
-  location            = var.location
+  location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
   domain_name_label   = "${var.user_name}-${var.role}-untrust"
   tags                = var.tags
 }
 
 resource "azurerm_network_interface" "mgmt" {
-  name                = "${var.user_name}-${var.role}-mgmt-eth0"
-  location            = var.location
+  name                = "${local.slug_name}-pa-mgmt"
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   ip_configuration {
     name                          = "mgmt"
     subnet_id                     = azurerm_subnet.mgmt.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
+    private_ip_address            = local.pa_mgmt_ip
     public_ip_address_id          = azurerm_public_ip.mgmt_public.id
   }
   tags = var.tags
 }
 
 resource "azurerm_network_interface" "untrust" {
-  name                = "${var.user_name}-${var.role}-untrust-eth0"
-  location            = var.location
+  name                = "${local.slug_name}-pa-untrust"
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   ip_configuration {
     name                          = "untrust"
     subnet_id                     = azurerm_subnet.untrust.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
+    private_ip_address            = local.pa_untrust_ip
     public_ip_address_id          = azurerm_public_ip.untrust_public.id
   }
   tags = var.tags
 }
 
 resource "azurerm_network_interface" "trust" {
-  name                = "${var.user_name}-${var.role}-trust-eth0"
-  location            = var.location
+  name                = "${local.slug_name}-pa-trust"
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   ip_configuration {
     name                          = "trust"
     subnet_id                     = azurerm_subnet.trust.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
+    private_ip_address            = local.pa_trust_ip
   }
   tags = var.tags
 }
 
+resource "azurerm_network_interface" "ubuntu" {
+  name                = "${local.slug_name}-ubuntu-nic"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  ip_configuration {
+    name                          = "ubuntu"
+    subnet_id                     = azurerm_subnet.trust.id
+    private_ip_address_allocation = "Static"
+    private_ip_address            = local.ubuntu_ip
+  }
+}
+
 resource "azurerm_route_table" "trust_route" {
-  name                = "${var.user_name}-${var.role}-trust-route-table"
-  location            = var.location
+  name                = "${local.slug_name}-trust-route-table"
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
   route {
     name                   = "trust-to-pa"
-    address_prefix         = azurerm_subnet.trust.address_prefixes[0]
+    address_prefix         = "0.0.0.0/0"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.32.1.4"
   }
@@ -116,8 +137,8 @@ resource "azurerm_subnet_route_table_association" "trust_subnet" {
 }
 
 resource "azurerm_network_security_group" "allow_all" {
-  name                = "${var.user_name}-${var.role}-sg-all"
-  location            = var.location
+  name                = "${local.slug_name}-sg-all"
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
   security_rule {
