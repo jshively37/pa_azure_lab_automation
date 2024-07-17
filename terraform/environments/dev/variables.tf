@@ -21,7 +21,6 @@ variable "user_name" {
 }
 
 variable "role" {
-  # WIP: Should be a list and loop through to deploy both a SC and RN infra
   description = "Type of connection"
   type        = string
   default     = "sc"
