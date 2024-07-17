@@ -12,3 +12,6 @@ repos:
       args:
         - --args=-diff
         - --args=-write=true
+    - id: terraform_validate
+      args:
+        - --args=-json
