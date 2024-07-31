@@ -1,11 +1,6 @@
-# resource "random_password" "pa_admin_pwd" {
-#   length = 12
-#   special = true
-# }
-
 resource "azurerm_linux_virtual_machine" "pa_fw" {
-  name                            = "${local.slug_name}-fw"
-  computer_name                   = "${local.slug_name}-fw"
+  name                            = "${local.slug_name}-pa"
+  computer_name                   = "${local.slug_name}-pa"
   location                        = azurerm_resource_group.rg.location
   resource_group_name             = azurerm_resource_group.rg.name
   size                            = var.vm_size
@@ -18,7 +13,7 @@ resource "azurerm_linux_virtual_machine" "pa_fw" {
     azurerm_network_interface.trust.id
   ]
   os_disk {
-    name                 = "${local.slug_name}-fw-disk"
+    name                 = "${local.slug_name}-pa-disk"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
