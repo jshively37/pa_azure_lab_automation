@@ -14,8 +14,7 @@ resource "azurerm_storage_account" "ubuntu_boot_diag" {
   account_replication_type = "LRS"
 }
 
-resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
-  # name                  = "${local.slug_name}-ubuntu"
+resource "azurerm_linux_virtual_machine" "ubuntu_jumpbox" {
   name                  = "${local.slug_name}-ubuntu"
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
