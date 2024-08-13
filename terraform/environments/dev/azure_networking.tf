@@ -1,14 +1,15 @@
 locals {
-  subnets        = tolist(cidrsubnets(var.address_space[0], 2, 2, 2, 2))
-  untrust_subnet = [local.subnets[0]]
-  trust_subnet   = [local.subnets[1]]
-  mgmt_subnet    = [local.subnets[3]]
-  pa_untrust_ip  = cidrhost(local.untrust_subnet[0], 4)
-  pa_trust_ip    = cidrhost(local.trust_subnet[0], 4)
-  pa_mgmt_ip     = cidrhost(local.mgmt_subnet[0], 4)
-  windows_ip     = cidrhost(local.trust_subnet[0], 10)
-  ubuntu_ip      = cidrhost(local.trust_subnet[0], 20)
-  slug_name      = "${var.user_name}-${var.location}-${var.role}"
+  subnets          = tolist(cidrsubnets(var.address_space[0], 2, 2, 2, 2))
+  untrust_subnet   = [local.subnets[0]]
+  trust_subnet     = [local.subnets[1]]
+  mgmt_subnet      = [local.subnets[3]]
+  pa_untrust_ip    = cidrhost(local.untrust_subnet[0], 4)
+  pa_trust_ip      = cidrhost(local.trust_subnet[0], 4)
+  pa_mgmt_ip       = cidrhost(local.mgmt_subnet[0], 4)
+  panorama_mgmt_ip = cidrhost(local.trust_subnet[0], 5)
+  windows_ip       = cidrhost(local.trust_subnet[0], 10)
+  ubuntu_ip        = cidrhost(local.trust_subnet[0], 20)
+  slug_name        = "${var.user_name}-${var.location}-${var.role}"
 }
 
 resource "azurerm_resource_group" "rg" {
@@ -64,6 +65,16 @@ resource "azurerm_public_ip" "untrust_public" {
   tags                = var.tags
 }
 
+# resource "azurerm_public_ip" "panorama_public" {
+#   count               = var.create_panorama ? 1 : 0
+#   name                = "${local.slug_name}-panorama-mgmt-pip"
+#   resource_group_name = azurerm_resource_group.rg.name
+#   location            = azurerm_resource_group.rg.location
+#   allocation_method   = "Static"
+#   domain_name_label   = "${var.user_name}-${var.role}-panorama-mgmt"
+#   tags                = var.tags
+# }
+
 resource "azurerm_network_interface" "mgmt" {
   name                = "${local.slug_name}-pa-mgmt"
   location            = azurerm_resource_group.rg.location
@@ -101,6 +112,21 @@ resource "azurerm_network_interface" "trust" {
     subnet_id                     = azurerm_subnet.trust.id
     private_ip_address_allocation = "Static"
     private_ip_address            = local.pa_trust_ip
+  }
+  tags = var.tags
+}
+
+resource "azurerm_network_interface" "panorama" {
+  count               = var.create_panorama ? 1 : 0
+  name                = "${local.slug_name}-panorama-mgmt"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  ip_configuration {
+    name                          = "trust"
+    subnet_id                     = azurerm_subnet.trust.id
+    private_ip_address_allocation = "Static"
+    private_ip_address            = local.panorama_mgmt_ip
+    # public_ip_address_id          = azurerm_public_ip.panorama_public[0].id
   }
   tags = var.tags
 }

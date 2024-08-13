@@ -1,0 +1,19 @@
+# Do you want to create a Panorama instance?
+# If no comment this line (default in variables.tf is false)
+create_panorama = true
+
+# Name you want to assign with no spaces. This could be customer
+# or your username. This will be the username used to log into
+# the firewall, Panorama (if created), Windows and Ubuntu jumpboxes.
+user_name       = ""
+
+# Password you want to assign.
+#This will be the password used to log into
+# the firewall, Panorama (if created), Windows and Ubuntu jumpboxes.
+password        = ""
+
+# Role with no spaces.
+role = ""
+
+# Address space to use. A /22 is expected.
+address_space = ["10.32.0.0/22"]

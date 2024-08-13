@@ -10,13 +10,19 @@ variable "location" {
   default     = "eastus"
 }
 
+variable "create_panorama" {
+  description = "Set to true in your tfvars file if you want to create a Panorama instance"
+  type        = bool
+  default     = false
+}
+
 variable "password" {
-  description = "Palo Alto admin password"
+  description = "Password for all devices"
   type        = string
 }
 
 variable "user_name" {
-  description = "Name of the user"
+  description = "Username for all devices"
   type        = string
 }
 
