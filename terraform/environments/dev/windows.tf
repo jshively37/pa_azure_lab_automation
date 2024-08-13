@@ -1,12 +1,13 @@
 resource "azurerm_windows_virtual_machine" "windows_jumpbox" {
-  name                  = "${local.slug_name}-windows"
-  computer_name         = "windows-jumpbox"
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
-  size                  = "Standard_D2s_v3"
-  admin_username        = var.user_name
-  admin_password        = var.password
-  network_interface_ids = [azurerm_network_interface.windows.id]
+  name                              = "${local.slug_name}-windows"
+  computer_name                     = "windows-jumpbox"
+  location                          = azurerm_resource_group.rg.location
+  resource_group_name               = azurerm_resource_group.rg.name
+  size                              = "Standard_D2s_v3"
+  admin_username                    = var.user_name
+  admin_password                    = var.password
+  network_interface_ids             = [azurerm_network_interface.windows.id]
+  vm_agent_platform_updates_enabled = false
 
   os_disk {
     name                 = "${local.slug_name}-windows-disk"
