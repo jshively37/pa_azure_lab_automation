@@ -18,7 +18,7 @@ Project development used the following versions:
 |-----------|---------|
 | terraform | 1.9.2   |
 | az-cli    | 2.62.0  |
-|           |         |
+
 
 **Note**: This project has yet to be tested on OpenTofu.
 
