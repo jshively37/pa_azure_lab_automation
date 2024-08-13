@@ -1,9 +1,3 @@
-variable "address_space" {
-  description = "List of subnets"
-  type        = list(any)
-  default     = ["10.32.0.0/22"]
-}
-
 variable "location" {
   description = "Region to deploy"
   type        = string
@@ -29,7 +23,22 @@ variable "user_name" {
 variable "role" {
   description = "Type of connection"
   type        = string
-  default     = "sc"
+  default     = "rn"
+
+  validation {
+    condition     = contains(["sc", "rn", "pan"], var.role)
+    error_message = "Role variable must be entered as sc, rn, or pan in lowercase."
+  }
+}
+
+variable "role_default_cidrs" {
+  description = "role to IP subnet mapping"
+  type        = map(string)
+  default = {
+    "sc"  = "10.32.0.0/22"
+    "rn"  = "10.32.4.0/22"
+    "pan" = "10.32.8.0/22"
+  }
 }
 
 variable "vm_size" {

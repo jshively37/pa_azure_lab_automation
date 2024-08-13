@@ -3,7 +3,7 @@ output "mgmt_ext_ip" {
 }
 
 output "mgmt_ext_fqdn" {
-  value = azurerm_public_ip.mgmt_public.fqdn
+  value = "https://${azurerm_public_ip.mgmt_public.fqdn}"
 }
 
 output "ipsec_tunnel_ext_ip" {
@@ -28,4 +28,8 @@ output "windows_jumpbox_ip" {
 
 output "ubuntu_jumpbox_ip" {
   value = local.ubuntu_ip
+}
+
+output "subnet_range" {
+  value = local.address_space
 }

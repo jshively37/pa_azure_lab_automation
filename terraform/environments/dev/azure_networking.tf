@@ -1,5 +1,6 @@
 locals {
-  subnets          = tolist(cidrsubnets(var.address_space[0], 2, 2, 2, 2))
+  address_space    = lookup(var.role_default_cidrs, var.role)
+  subnets          = cidrsubnets(local.address_space, 2, 2, 2, 2)
   untrust_subnet   = [local.subnets[0]]
   trust_subnet     = [local.subnets[1]]
   mgmt_subnet      = [local.subnets[3]]
@@ -22,7 +23,7 @@ resource "azurerm_virtual_network" "vnet" {
   name                = "${local.slug_name}-vnet"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  address_space       = var.address_space
+  address_space       = [local.address_space]
   tags                = var.tags
 }
 
