@@ -49,9 +49,10 @@ To install Terraform, use the following link: https://developer.hashicorp.com/te
 * Modify the file and save.
 
 #### Executing the code
-* Login to Azure using the following command: `az login --use-device-code`
-* Change directory to `terraform\environments\dev`
-* After logging in and run `terraform plan`.
+* Login to Azure using the following command: `az login --use-device-code`.
+* Change directory to `terraform\environments\dev`.
+* After logging in run `terraform init`.
+* After init finishes run `terraform plan`.
   * If you are creating this without Panorama you should see 20 to add.
   * If you are creating this with Panorama you should see 22 to add.
 * If you are happy with the output run `terraform apply`.
