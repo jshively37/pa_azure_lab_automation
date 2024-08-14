@@ -6,6 +6,21 @@ This project is a work in progress. Currently, the goal is an MVP that will depl
 
 GitHub issues are used to track issues and additions to this project. Contributions are welcome. I will work on contribution guidelines, but for now, reach out directly to me, and we can coordinate.
 
+## High Level Design
+
+The CIDR deployed are based on the `role` variable and declared in `variables.tf`. Currently, three roles are accepted: sc, rn, and pan. Terraform will create a publicly available FQDN for the firewall untrust and management to facilitate establishing tunnels and management.
+
+| Role | Description        | CIDR         | Untrust      | Trust        | MGMT          |
+|------|--------------------|--------------|--------------|--------------|---------------|
+| rn   | Remote Network     | 10.32.0.0/22 | 10.32.0.0/24 | 10.32.1.0/24 | 10.32.3.0/24  |
+| sc   | Service Connection | 10.32.4.0/22 | 10.32.4.0/24 | 10.32.5.0/24 | 10.32.7.0/24  |
+| pan  | Deploy Panorama    | 10.32.8.0/22 | 10.32.8.0/24 | 10.32.9.0/24 | 10.32.11.0/24 |
+|      |                    |              |              |              |               |
+
+After completing the devices will have the following fourth octects.
+
+![high_level](images/high_level_design.jpeg)
+
 ## Running this project.
 
 #### Dependancies
