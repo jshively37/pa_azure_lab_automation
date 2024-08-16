@@ -66,16 +66,6 @@ resource "azurerm_public_ip" "untrust_public" {
   tags                = var.tags
 }
 
-# resource "azurerm_public_ip" "panorama_public" {
-#   count               = var.create_panorama ? 1 : 0
-#   name                = "${local.slug_name}-panorama-mgmt-pip"
-#   resource_group_name = azurerm_resource_group.rg.name
-#   location            = azurerm_resource_group.rg.location
-#   allocation_method   = "Static"
-#   domain_name_label   = "${var.user_name}-${var.role}-panorama-mgmt"
-#   tags                = var.tags
-# }
-
 resource "azurerm_network_interface" "mgmt" {
   name                = "${local.slug_name}-pa-mgmt"
   location            = azurerm_resource_group.rg.location
@@ -127,7 +117,6 @@ resource "azurerm_network_interface" "panorama" {
     subnet_id                     = azurerm_subnet.trust.id
     private_ip_address_allocation = "Static"
     private_ip_address            = local.panorama_mgmt_ip
-    # public_ip_address_id          = azurerm_public_ip.panorama_public[0].id
   }
   tags = var.tags
 }
