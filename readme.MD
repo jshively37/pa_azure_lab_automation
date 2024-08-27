@@ -3,7 +3,7 @@
 - [PA Azure Lab Automation](#pa-azure-lab-automation)
   - [Overview](#overview)
   - [High Level Design](#high-level-design)
-  - [Running this project.](#running-this-project)
+  - [Running this project](#running-this-project)
       - [Dependancies](#dependancies)
       - [Required files](#required-files)
       - [Preparing to run](#preparing-to-run)
@@ -35,7 +35,7 @@ After completing the devices will have the following fourth octects.
 
 ![high_level](images/high_level_design.jpeg)
 
-## Running this project.
+## Running this project
 
 #### Dependancies
 
