@@ -87,7 +87,7 @@ To install Terraform, use the following link: https://developer.hashicorp.com/te
 
 After running Terraform will output information useful to helping build and maintain the environment. Please make sure to save these and they can be retrieved from Azure if necessary.
 
-`azure_untrust_gw`: The Azure gateway address for untrust firewall. This is used for the default route when sending traffic to the Internet.
+`azure_untrust_gw`: The Azure gateway address for untrust firewall. This is used for the default route when sending traffic to the Internet.\
 `ipsec_tunnel_ext_fqdn`: FQDN that can used for tunnel termination.\
 `ipsec_tunnel_ext_ip`: IP address that can be used for tunnel termination.\
 `mgmt_ext_fqdn`: FQDN to access the firewall for mgmt.\
