@@ -88,14 +88,14 @@ To install Terraform, use the following link: https://developer.hashicorp.com/te
 After running Terraform will output information useful to helping build and maintain the environment. Please make sure to save these and they can be retrieved from Azure if necessary.
 
 `azure_untrust_gw`: The Azure gateway address for untrust firewall. This is used for the default route when sending traffic to the Internet.
-`ipsec_tunnel_ext_fqdn`: FQDN that can used for tunnel termination.
-`ipsec_tunnel_ext_ip`: IP address that can be used for tunnel termination.
-`mgmt_ext_fqdn`: FQDN to access the firewall for mgmt.
-`mgmt_ext_ip`: IP address to access the firewall for mgmt.
-`panorama_mgmt_ip` (optional): Trust zone IP address assigned to the Panorama isntance.
-`subnet_range`: Subnet range that is used within Azure.
-`ubuntu_jumpbox_ip`: Trust zone IP address assigned to the Ubuntu jumpbox.
-`windows_jumpbox_ip`: Trust zone IP address assigned to the Windows jumpbox.
+`ipsec_tunnel_ext_fqdn`: FQDN that can used for tunnel termination.\
+`ipsec_tunnel_ext_ip`: IP address that can be used for tunnel termination.\
+`mgmt_ext_fqdn`: FQDN to access the firewall for mgmt.\
+`mgmt_ext_ip`: IP address to access the firewall for mgmt.\
+`panorama_mgmt_ip` (optional): Trust zone IP address assigned to the Panorama isntance.\
+`subnet_range`: Subnet range that is used within Azure.\
+`ubuntu_jumpbox_ip`: Trust zone IP address assigned to the Ubuntu jumpbox.\
+`windows_jumpbox_ip`: Trust zone IP address assigned to the Windows jumpbox.\
 
 ### Other variables that can be passed either via file or CLI
 
