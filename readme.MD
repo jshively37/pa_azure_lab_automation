@@ -1,5 +1,19 @@
 # PA Azure Lab Automation
 
+- [PA Azure Lab Automation](#pa-azure-lab-automation)
+  - [Overview](#overview)
+  - [High Level Design](#high-level-design)
+  - [Running this project.](#running-this-project)
+      - [Dependancies](#dependancies)
+      - [Required files](#required-files)
+      - [Preparing to run](#preparing-to-run)
+    - [Passing variables via a file](#passing-variables-via-a-file)
+    - [Passving variables via CLI](#passving-variables-via-cli)
+    - [Outputs](#outputs)
+    - [Other variables that can be passed either via file or CLI](#other-variables-that-can-be-passed-either-via-file-or-cli)
+    - [Creating a Panorama instance](#creating-a-panorama-instance)
+
+
 ## Overview
 
 This project is a work in progress. Currently, the goal is an MVP that will deploy a Palo Alto VM firewall, required Azure networking components, a Windows and Ubuntu jump box, and a Panorama instance. The Panorama instance is based on a specific variable, `create_panorama`, being passed.
@@ -48,13 +62,54 @@ To install Terraform, use the following link: https://developer.hashicorp.com/te
   * `terraform.tfvars.example` is an example of the expected outputs.
 * Modify the file and save.
 
-#### Executing the code
-* Login to Azure using the following command: `az login --use-device-code`.
+#### Preparing to run
+* Login to Azure using the command `az login -use-device-code` command.
 * Change directory to `terraform\environments\dev`.
 * After logging in run `terraform init`.
-* After init finishes run `terraform plan`.
-  * If you are creating this without Panorama you should see 20 to add.
-  * If you are creating this with Panorama you should see 22 to add.
+
+### Passing variables via a file
+* Create a `terraform.tfvars` file in the `terraform\environments\dev` directory.
+  * `terraform.tfvars.example` is an example of the expected outputs.
+* Run `terraform plan`.
 * If you are happy with the output run `terraform apply`.
-  * This will take approximately 10 minutes to run.
-  * After completing it will take 5 minutes for the firewall to boot up and accept logins.
+* This will take approximately 10 minutes to run.
+* After completing, the firewall will take 5 minutes to boot up and accept logins.
+
+### Passving variables via CLI
+* Run `terraform plan -var="user_name={username}" -var="password={password}" -var="role={rn or sc}`.
+  * If you create this without Panorama, you should see 20 to add.
+  * If you create this with Panorama, you should see 22 to add.
+* If you are happy with the output, run `terraform apply -var="user_name={username}" -var="password={password}" -var="role={role}"`.
+* This will take approximately 10 minutes to run.
+* After completing, the firewall will take 5 minutes to boot up and accept logins.
+
+### Outputs
+
+After running Terraform will output information useful to helping build and maintain the environment. Please make sure to save these and they can be retrieved from Azure if necessary.
+
+`azure_untrust_gw`: The Azure gateway address for untrust firewall. This is used for the default route when sending traffic to the Internet.\
+`ipsec_tunnel_ext_fqdn`: FQDN that can used for tunnel termination.\
+`ipsec_tunnel_ext_ip`: IP address that can be used for tunnel termination.\
+`mgmt_ext_fqdn`: FQDN to access the firewall for mgmt.\
+`mgmt_ext_ip`: IP address to access the firewall for mgmt.\
+`panorama_mgmt_ip` (optional): Trust zone IP address assigned to the Panorama isntance.\
+`subnet_range`: Subnet range that is used within Azure.\
+`ubuntu_jumpbox_ip`: Trust zone IP address assigned to the Ubuntu jumpbox.\
+`windows_jumpbox_ip`: Trust zone IP address assigned to the Windows jumpbox.\
+
+### Other variables that can be passed either via file or CLI
+
+All available variables are defined in `terraform\environments\dev\variables.tf`. If you want to pass another value that isn't default, add it to the terraform.tfvars file or pass them via the cli using the `-var="variable={new value}`.
+
+For example, if you want to change Azure regions, retrieve a list of the regions by entering in `az account list-locations -o table`. The automation expects the value in the second column called `Name`.
+
+File: In `terraform.tfvars` add in `location = "{value from second column called Name}"`.
+CLI: Pass `-var=location={value from second column called Name}` to both terraform plan and apply.
+
+
+### Creating a Panorama instance
+
+To deploy a Panorama instance you must set the variables `create_panorama=true` and `role=pan`.
+
+File: In `terraform.tfvars` add in `create_panorama = true` and `role = pan`.
+CLI: Pass `-var="create_panorama=true"` and `var="role=pan"` to both terraform plan and apply.
