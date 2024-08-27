@@ -4,9 +4,9 @@
   - [Overview](#overview)
   - [High Level Design](#high-level-design)
   - [Running this project](#running-this-project)
-      - [Dependancies](#dependancies)
-      - [Required files](#required-files)
-      - [Preparing to run](#preparing-to-run)
+    - [Dependancies](#dependancies)
+    - [Required files](#required-files)
+    - [Preparing to run](#preparing-to-run)
     - [Passing variables via a file](#passing-variables-via-a-file)
     - [Passving variables via CLI](#passving-variables-via-cli)
     - [Outputs](#outputs)
@@ -37,7 +37,7 @@ After completing the devices will have the following fourth octects.
 
 ## Running this project
 
-#### Dependancies
+### Dependancies
 
 This project is dependent on the Azure CLI and Terraform tools.
 
@@ -55,14 +55,14 @@ To install Azure CLI tools, use the following link: https://learn.microsoft.com/
 
 To install Terraform, use the following link: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli.
 
-#### Required files
+### Required files
 
 * Change directory to `terraform\environments\dev`
 * Create a file called `terraform.tfvars`
   * `terraform.tfvars.example` is an example of the expected outputs.
 * Modify the file and save.
 
-#### Preparing to run
+### Preparing to run
 * Login to Azure using the command `az login -use-device-code` command.
 * Change directory to `terraform\environments\dev`.
 * After logging in run `terraform init`.
