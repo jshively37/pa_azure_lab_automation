@@ -92,7 +92,7 @@ After running Terraform will output information useful to helping build and main
 `ipsec_tunnel_ext_ip`: IP address that can be used for tunnel termination.\
 `mgmt_ext_fqdn`: FQDN to access the firewall for mgmt.\
 `mgmt_ext_ip`: IP address to access the firewall for mgmt.\
-`panorama_mgmt_ip` (optional): Trust zone IP address assigned to the Panorama isntance.\
+`panorama_mgmt_ip` (optional): Trust zone IP address assigned to the Panorama instance.\
 `subnet_range`: Subnet range that is used within Azure.\
 `ubuntu_jumpbox_ip`: Trust zone IP address assigned to the Ubuntu jumpbox.\
 `windows_jumpbox_ip`: Trust zone IP address assigned to the Windows jumpbox.
