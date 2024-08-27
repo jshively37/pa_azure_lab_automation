@@ -7,10 +7,10 @@
       - [Dependancies](#dependancies)
       - [Required files](#required-files)
       - [Preparing to run](#preparing-to-run)
-    - [Passing variables via a file.](#passing-variables-via-a-file)
+    - [Passing variables via a file](#passing-variables-via-a-file)
     - [Passving variables via CLI](#passving-variables-via-cli)
     - [Other variables that can be passed either via file or CLI](#other-variables-that-can-be-passed-either-via-file-or-cli)
-    - [Creating a Panorama instance.](#creating-a-panorama-instance)
+    - [Creating a Panorama instance](#creating-a-panorama-instance)
 
 
 ## Overview
@@ -66,7 +66,7 @@ To install Terraform, use the following link: https://developer.hashicorp.com/te
 * Change directory to `terraform\environments\dev`.
 * After logging in run `terraform init`.
 
-### Passing variables via a file.
+### Passing variables via a file
 * Create a `terraform.tfvars` file in the `terraform\environments\dev` directory.
   * `terraform.tfvars.example` is an example of the expected outputs.
 * Run `terraform plan`.
@@ -88,13 +88,13 @@ All available variables are defined in `terraform\environments\dev\variables.tf`
 
 For example, if you want to change Azure regions, retrieve a list of the regions by entering in `az account list-locations -o table`. The automation expects the value in the second column called `Name`.
 
-File: In `terraform.tfvars` add in `location = "{value from second column called Name}"`
+File: In `terraform.tfvars` add in `location = "{value from second column called Name}"`.
 CLI: Pass `-var=location={value from second column called Name}` to both terraform plan and apply.
 
 
-### Creating a Panorama instance.
+### Creating a Panorama instance
 
 To deploy a Panorama instance you must set the variables `create_panorama=true` and `role=pan`.
 
-File: In `terraform.tfvars` add in `create_panorama = true` and `role = pan`
+File: In `terraform.tfvars` add in `create_panorama = true` and `role = pan`.
 CLI: Pass `-var="create_panorama=true"` and `var="role=pan"` to both terraform plan and apply.
