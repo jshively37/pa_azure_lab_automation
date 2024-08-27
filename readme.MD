@@ -95,7 +95,7 @@ After running Terraform will output information useful to helping build and main
 `panorama_mgmt_ip` (optional): Trust zone IP address assigned to the Panorama isntance.\
 `subnet_range`: Subnet range that is used within Azure.\
 `ubuntu_jumpbox_ip`: Trust zone IP address assigned to the Ubuntu jumpbox.\
-`windows_jumpbox_ip`: Trust zone IP address assigned to the Windows jumpbox.\
+`windows_jumpbox_ip`: Trust zone IP address assigned to the Windows jumpbox.
 
 ### Other variables that can be passed either via file or CLI
 
