@@ -1,6 +1,6 @@
 # Do you want to create a Panorama instance?
-# If no comment this line (default in variables.tf is false)
-create_panorama = true
+# If yes change false to true
+create_panorama = false
 
 # Name you want to assign with no spaces. This could be customer
 # or your username. This will be the username used to log into
@@ -8,7 +8,7 @@ create_panorama = true
 user_name       = ""
 
 # Password you want to assign.
-#This will be the password used to log into
+# This will be the password used to log into
 # the firewall, Panorama (if created), Windows and Ubuntu jumpboxes.
 password        = ""
 
@@ -17,3 +17,10 @@ password        = ""
 # sc for service connection
 # pan for panorama
 role            = ""
+
+# By default Terraform will use eastus region. If you wish to use
+# a different region enter the region below. All available regions
+# can be found using az account list-locations -o table
+# NOTE: The automation expects the second column called Name from the
+# above output.
+location        = ""
