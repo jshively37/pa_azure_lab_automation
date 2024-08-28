@@ -56,7 +56,7 @@ To install Terraform, use the following link: https://developer.hashicorp.com/te
 
 ### Preparing to run
 * clone this repo `git clone https://github.com/jshively37/pa_azure_lab_automation.git`
-* Login to Azure using the command `az login -use-device-code` command.
+* Login to Azure using the command `az login --use-device-code` command.
 * Change directory to `terraform\environments\dev`.
 * After logging in run `terraform init`.
 
