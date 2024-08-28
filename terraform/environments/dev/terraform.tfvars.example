@@ -22,5 +22,5 @@ role            = ""
 # a different region enter the region below. All available regions
 # can be found using az account list-locations -o table
 # NOTE: The automation expects the second column called Name from the
-# above output.
-location        = ""
+# above CLI output.
+location        = "eastus"
