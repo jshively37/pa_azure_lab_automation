@@ -154,7 +154,7 @@ resource "azurerm_route_table" "trust_route" {
     name                   = "trust-to-pa"
     address_prefix         = "0.0.0.0/0"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.32.1.4"
+    next_hop_in_ip_address = local.pa_trust_ip
   }
   tags = var.tags
 }

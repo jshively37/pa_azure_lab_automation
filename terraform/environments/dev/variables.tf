@@ -44,7 +44,7 @@ variable "role_default_cidrs" {
 variable "vm_size" {
   description = "Size of the VM"
   type        = string
-  default     = "Standard_D8_v4"
+  default     = "Standard_D3_v2"
 }
 
 variable "tags" {
