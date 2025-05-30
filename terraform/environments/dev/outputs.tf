@@ -14,8 +14,8 @@ output "ipsec_tunnel_ext_fqdn" {
   value = azurerm_public_ip.untrust_public.fqdn
 }
 
-output "azure_untrust_gw" {
-  value = cidrhost(local.untrust_subnet[0], 1)
+output "fw_default_route" {
+  value = "${cidrhost(local.untrust_subnet[0], 1)}/24"
 }
 
 output "panorama_mgmt_ip" {
