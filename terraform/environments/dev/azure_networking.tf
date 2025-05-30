@@ -164,20 +164,36 @@ resource "azurerm_subnet_route_table_association" "trust_subnet" {
   route_table_id = azurerm_route_table.trust_route.id
 }
 
-resource "azurerm_network_security_group" "allow_all" {
-  name                = "${local.slug_name}-sg-all"
+resource "azurerm_network_interface_security_group_association" "mgmt_interface" {
+  network_interface_id      = azurerm_network_interface.mgmt.id
+  network_security_group_id = azurerm_network_security_group.allow_mgmt.id
+}
+
+resource "azurerm_network_security_group" "allow_mgmt" {
+  name                = "${local.slug_name}-nsg-mgmt"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
   security_rule {
-    name                       = "Allow_All_In"
+    name                       = "Allow_PA_Addresses"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "*"
     source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
+    destination_port_ranges    = [22, 443]
+    source_address_prefix      = "1.1.1.1/32"
+    destination_address_prefix = "*"
+  }
+  security_rule {
+    name                       = "Allow_Custom_Addresses"
+    priority                   = 105
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_ranges    = [22, 443]
+    source_address_prefix      = "2.2.2.2/32"
     destination_address_prefix = "*"
   }
   security_rule {

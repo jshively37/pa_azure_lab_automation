@@ -3,11 +3,11 @@ resource "azurerm_windows_virtual_machine" "windows_jumpbox" {
   computer_name                     = "windows-jumpbox"
   location                          = azurerm_resource_group.rg.location
   resource_group_name               = azurerm_resource_group.rg.name
-  size                              = "Standard_Ds3_v2"
+  size                              = "Standard_DS3_v2"
   admin_username                    = var.user_name
   admin_password                    = var.password
   network_interface_ids             = [azurerm_network_interface.windows.id]
-  vm_agent_platform_updates_enabled = false
+  vm_agent_platform_updates_enabled = true
   patch_mode                        = "AutomaticByPlatform"
 
   os_disk {
