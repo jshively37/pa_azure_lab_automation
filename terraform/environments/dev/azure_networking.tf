@@ -95,9 +95,10 @@ resource "azurerm_network_interface" "untrust" {
 }
 
 resource "azurerm_network_interface" "trust" {
-  name                = "${local.slug_name}-pa-trust"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  name                  = "${local.slug_name}-pa-trust"
+  location              = azurerm_resource_group.rg.location
+  resource_group_name   = azurerm_resource_group.rg.name
+  ip_forwarding_enabled = true
   ip_configuration {
     name                          = "trust"
     subnet_id                     = azurerm_subnet.trust.id
