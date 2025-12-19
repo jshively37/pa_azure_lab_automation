@@ -6,12 +6,16 @@ resource "random_id" "random_id" {
   byte_length = 8
 }
 
-resource "azurerm_storage_account" "ubuntu_boot_diag" {
-  name                     = "diag${random_id.random_id.hex}"
-  location                 = azurerm_resource_group.rg.location
-  resource_group_name      = azurerm_resource_group.rg.name
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+resource "azurerm_storage_account" "boot_diag" {
+  name                          = "diag${random_id.random_id.hex}"
+  location                      = azurerm_resource_group.rg.location
+  resource_group_name           = azurerm_resource_group.rg.name
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  public_network_access_enabled = "false"
+  network_rules {
+    default_action = "Deny"
+  }
 }
 
 resource "azurerm_linux_virtual_machine" "ubuntu_jumpbox" {
@@ -27,7 +31,7 @@ resource "azurerm_linux_virtual_machine" "ubuntu_jumpbox" {
     storage_account_type = "Premium_LRS"
   }
   boot_diagnostics {
-    storage_account_uri = azurerm_storage_account.ubuntu_boot_diag.primary_blob_endpoint
+    storage_account_uri = azurerm_storage_account.boot_diag.primary_blob_endpoint
   }
 
   source_image_reference {
