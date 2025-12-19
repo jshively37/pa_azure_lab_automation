@@ -17,7 +17,7 @@ resource "azurerm_windows_virtual_machine" "windows_jumpbox" {
   }
 
   boot_diagnostics {
-    storage_account_uri = azurerm_storage_account.ubuntu_boot_diag.primary_blob_endpoint
+    storage_account_uri = azurerm_storage_account.boot_diag.primary_blob_endpoint
   }
 
   source_image_reference {
